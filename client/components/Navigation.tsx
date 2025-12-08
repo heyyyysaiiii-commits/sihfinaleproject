@@ -8,6 +8,7 @@ import {
   Settings as SettingsIcon,
   Menu,
   X,
+  Upload,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -20,6 +21,7 @@ export function Navigation() {
 
   const navItems = [
     { path: "/", label: "Dashboard", icon: BarChart3 },
+    { path: "/data-upload", label: "Data Upload", icon: Upload },
     { path: "/rake-planner", label: "Rake Planner", icon: Truck },
     { path: "/orders", label: "Orders", icon: Package },
     { path: "/stockyards", label: "Stockyards", icon: Warehouse },
