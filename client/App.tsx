@@ -12,6 +12,7 @@ import Orders from "./pages/Orders";
 import Stockyards from "./pages/Stockyards";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
+import DataUpload from "./pages/DataUpload";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/data-upload" element={<DataUpload />} />
           <Route path="/rake-planner" element={<RakePlanner />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/stockyards" element={<Stockyards />} />
