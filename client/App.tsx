@@ -5,14 +5,13 @@ import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RakePlanner from "./pages/RakePlanner";
 import Orders from "./pages/Orders";
 import Stockyards from "./pages/Stockyards";
+import Optimization from "./pages/Optimization";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
-import DataUpload from "./pages/DataUpload";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,11 +23,11 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/data-upload" element={<DataUpload />} />
+          <Route path="/" element={<Navigate to="/rake-planner" replace />} />
           <Route path="/rake-planner" element={<RakePlanner />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/stockyards" element={<Stockyards />} />
+          <Route path="/optimization" element={<Optimization />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
