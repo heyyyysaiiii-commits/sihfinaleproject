@@ -29,7 +29,10 @@ export function Navigation() {
     { path: "/about", label: "About", icon: HelpCircle },
   ];
 
-  const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + "/");
+  const isActive = (path: string) => {
+    if (path === "/") return location.pathname === "/";
+    return location.pathname === path || location.pathname.startsWith(path + "/");
+  };
 
   if (isMobile) {
     return (
