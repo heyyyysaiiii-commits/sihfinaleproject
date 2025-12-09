@@ -442,7 +442,7 @@ export default function DataUpload() {
             </div>
 
             {/* Right Panel - Schema & Sample */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Sample Dataset Button */}
               <div className="card-glow p-8 space-y-4 border-secondary/30 bg-gradient-to-br from-secondary/10 to-secondary/5">
                 <h3 className="text-lg font-semibold text-foreground">Quick Start</h3>
