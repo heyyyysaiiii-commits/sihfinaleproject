@@ -135,7 +135,7 @@ export default function Reports() {
                 <div>
                   <p className="text-xs text-muted-foreground font-medium mb-2">💰 Total Cost</p>
                   <p className="text-3xl font-bold text-primary">
-                    ₹{(summary.total_cost / 1000).toFixed(1)}k
+                    ₹{(kpi.total_cost_optimized / 1000).toFixed(1)}k
                   </p>
                   <p className="text-xs text-green-400 mt-2">✨ Optimized for efficiency</p>
                 </div>
@@ -148,7 +148,7 @@ export default function Reports() {
                 <div>
                   <p className="text-xs text-muted-foreground font-medium mb-2">🚆 Avg Utilization</p>
                   <p className="text-3xl font-bold text-primary">
-                    {Math.round(summary.avg_utilization)}%
+                    {Math.round(kpi.average_rake_utilization_percent)}%
                   </p>
                   <p className="text-xs text-green-400 mt-2">Good wagon efficiency</p>
                 </div>
@@ -161,7 +161,7 @@ export default function Reports() {
                 <div>
                   <p className="text-xs text-muted-foreground font-medium mb-2">⏱️ On-Time Delivery</p>
                   <p className="text-3xl font-bold text-green-400">
-                    {Math.round(summary.on_time_percent)}%
+                    {Math.round(kpi.on_time_delivery_percent)}%
                   </p>
                   <p className="text-xs text-green-400 mt-2">All deadlines met</p>
                 </div>
@@ -174,7 +174,7 @@ export default function Reports() {
                 <div>
                   <p className="text-xs text-muted-foreground font-medium mb-2">🚨 Demurrage Avoided</p>
                   <p className="text-3xl font-bold text-primary">
-                    ₹{(summary.demurrage_avoided / 1000).toFixed(1)}k
+                    ₹{(kpi.demurrage_savings / 1000).toFixed(1)}k
                   </p>
                   <p className="text-xs text-green-400 mt-2">No late penalties</p>
                 </div>
