@@ -102,7 +102,7 @@ export default function RakePlanner() {
               <span className="text-2xl">✅</span> Today's Rake Plan
             </h1>
             <p className="text-subtitle">
-              {rakes.length} rakes ready · {Math.round(summary.on_time_percent)}% on-time delivery
+              {rakes.length} rakes ready · {Math.round(kpi.on_time_delivery_percent)}% on-time delivery
             </p>
           </div>
 
@@ -113,7 +113,7 @@ export default function RakePlanner() {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground font-medium mb-1">💰 Total Cost</p>
-                  <p className="text-2xl font-bold text-primary">₹{(summary.total_cost / 1000).toFixed(1)}k</p>
+                  <p className="text-2xl font-bold text-primary">₹{(kpi.total_cost_optimized / 1000).toFixed(1)}k</p>
                 </div>
                 <DollarSign className="w-5 h-5 text-primary/50 group-hover:text-primary transition-colors" />
               </div>
@@ -125,8 +125,8 @@ export default function RakePlanner() {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground font-medium mb-1">📊 Avg Utilization</p>
-                  <p className={`text-2xl font-bold ${getUtilizationColor(summary.avg_utilization)}`}>
-                    {Math.round(summary.avg_utilization)}%
+                  <p className={`text-2xl font-bold ${getUtilizationColor(kpi.average_rake_utilization_percent)}`}>
+                    {Math.round(kpi.average_rake_utilization_percent)}%
                   </p>
                 </div>
                 <TrendingUp className="w-5 h-5 text-primary/50 group-hover:text-primary transition-colors" />
@@ -139,7 +139,7 @@ export default function RakePlanner() {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground font-medium mb-1">⏱️ On-Time %</p>
-                  <p className="text-2xl font-bold text-green-400">{Math.round(summary.on_time_percent)}%</p>
+                  <p className="text-2xl font-bold text-green-400">{Math.round(kpi.on_time_delivery_percent)}%</p>
                 </div>
                 <CheckCircle className="w-5 h-5 text-green-400/50 group-hover:text-green-400 transition-colors" />
               </div>
@@ -151,7 +151,7 @@ export default function RakePlanner() {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground font-medium mb-1">🚨 Demurrage Avoided</p>
-                  <p className="text-2xl font-bold text-primary">₹{(summary.demurrage_avoided / 1000).toFixed(1)}k</p>
+                  <p className="text-2xl font-bold text-primary">₹{(kpi.demurrage_savings / 1000).toFixed(1)}k</p>
                 </div>
                 <Zap className="w-5 h-5 text-primary/50 group-hover:text-primary transition-colors" />
               </div>
@@ -286,11 +286,11 @@ export default function RakePlanner() {
                 </div>
               </div>
 
-              {approvedRakes.size > 0 && (
+              {rakes.length > 0 && (
                 <Alert className="border-green-500/30 bg-green-500/10">
                   <CheckCircle className="h-4 w-4 text-green-400" />
                   <AlertDescription className="text-green-300">
-                    All selected rakes are ready. Click below to finalize dispatch.
+                    Review rakes and approve for dispatch.
                   </AlertDescription>
                 </Alert>
               )}
