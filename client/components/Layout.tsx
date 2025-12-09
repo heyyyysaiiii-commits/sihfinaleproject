@@ -10,7 +10,7 @@ interface LayoutProps {
   planData?: any;
 }
 
-export function Layout({ children, showAIAssistant = true }: LayoutProps) {
+export function Layout({ children, showAIAssistant = true, planData }: LayoutProps) {
   const isMobile = useIsMobile();
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
 
