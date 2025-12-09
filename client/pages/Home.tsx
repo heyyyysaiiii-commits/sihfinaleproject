@@ -51,7 +51,7 @@ export default function Home() {
           </div>
 
           {/* Problem Section */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary" />
@@ -99,7 +99,7 @@ export default function Home() {
           </div>
 
           {/* Solution Section */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary" />
@@ -147,7 +147,7 @@ export default function Home() {
           </div>
 
           {/* What OptiRake Offers Section */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary" />
@@ -222,7 +222,7 @@ export default function Home() {
           </div>
 
           {/* CTA Section */}
-          <div className="card-gradient p-12 space-y-8 rounded-2xl border border-primary/30 text-center">
+          <div className="card-gradient p-12 space-y-6 rounded-2xl border border-primary/30 text-center">
             <div className="space-y-4">
               <h2 className="text-4xl font-bold text-foreground">Ready to optimize?</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
