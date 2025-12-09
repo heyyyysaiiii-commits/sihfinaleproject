@@ -181,19 +181,27 @@ export default function Orders() {
                 <p className="text-xs font-semibold text-muted-foreground uppercase">Order Details</p>
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Destination:</span>
-                    <span className="font-medium text-foreground">{selectedOrder.destination}</span>
+                    <span className="text-muted-foreground">Order ID:</span>
+                    <span className="font-medium text-foreground">{selectedOrder.order_id}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Quantity:</span>
-                    <span className="font-medium text-foreground">{selectedOrder.quantity_tonnes}t</span>
+                    <span className="text-muted-foreground">Customer:</span>
+                    <span className="font-medium text-foreground">{selectedOrder.customer_id}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Material:</span>
                     <span className="font-medium text-foreground">{selectedOrder.material_id}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Due:</span>
+                    <span className="text-muted-foreground">Quantity:</span>
+                    <span className="font-medium text-foreground">{selectedOrder.quantity_tonnes}t</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Destination:</span>
+                    <span className="font-medium text-foreground">{selectedOrder.destination}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Due Date:</span>
                     <span className="font-medium text-foreground">
                       {new Date(selectedOrder.due_date).toLocaleDateString()}
                     </span>
