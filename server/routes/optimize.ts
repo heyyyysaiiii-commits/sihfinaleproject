@@ -19,8 +19,8 @@ import {
   LoadingPoint,
   RouteCost,
 } from "@shared/api";
-import { optimizeRakes } from "../lib/optimizer";
-import { getSampleDataset } from "../lib/sample-data";
+import { optimizeRakesSimple, generateOrderExplanation, generateRakeExplanation } from "../lib/simple-optimizer";
+import { generateSimpleSampleData } from "../lib/simple-data";
 import { mlPredictRisk } from "../lib/ml-model";
 
 /**
