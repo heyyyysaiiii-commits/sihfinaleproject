@@ -46,7 +46,7 @@ export default function Orders() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
           {/* Header */}
           <div className="space-y-2 animate-fade-in">
-            <h1 className="text-4xl font-bold text-foreground">📋 Customer Orders</h1>
+            <h1 className="text-4xl font-bold text-foreground">Customer Orders</h1>
             <p className="text-lg text-muted-foreground">
               {orders.length} pending orders waiting for the best rake assignment
             </p>
@@ -154,7 +154,7 @@ export default function Orders() {
           {orders.length > 0 && (
             <div className="card-glow p-6 border-primary/30 space-y-3">
               <p className="text-sm text-foreground/80">
-                <strong>💡 How it works:</strong> Click "Best Fit" for any order to see which rake it should go into 
+                <strong>How it works:</strong> Click "Best Fit" for any order to see which rake it should go into 
                 and why. The system recommends the best assignment based on cost, delivery time, and wagon availability.
               </p>
             </div>
