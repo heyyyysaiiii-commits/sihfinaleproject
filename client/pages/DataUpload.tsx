@@ -36,6 +36,7 @@ export default function DataUpload() {
   const [isDragActive, setIsDragActive] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [isLoadingSample, setIsLoadingSample] = useState(false);
+  const [previewState, setPreviewState] = useState<PreviewState>({ currentPage: 0, rowsPerPage: 10 });
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
