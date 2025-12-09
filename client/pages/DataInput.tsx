@@ -162,7 +162,7 @@ export default function DataInput() {
             </p>
             <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
               <p className="text-sm text-foreground">
-                <strong>✅ Upload Status:</strong> {uploadedFiles.size} of 6 files loaded
+                <strong>Upload Status:</strong> {uploadedFiles.size} of 6 files loaded
               </p>
               <div className="w-full bg-muted rounded-full h-2 mt-2">
                 <div
@@ -184,7 +184,7 @@ export default function DataInput() {
                     <p className="text-sm text-muted-foreground mt-1">{file.purpose}</p>
                   </div>
                   {uploadedFiles.has(file.id) && (
-                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                    <div className="w-5 h-5 text-green-400 flex-shrink-0 text-center">✓</div>
                   )}
                 </div>
 
@@ -253,7 +253,6 @@ export default function DataInput() {
                 className="btn-gradient h-12 px-8 flex items-center gap-2"
                 disabled={!allUploaded}
               >
-                <CheckCircle className="w-5 h-5" />
                 All Files Uploaded - Proceed to Optimization
               </Button>
               <Button
@@ -266,7 +265,7 @@ export default function DataInput() {
             </div>
             {allUploaded && (
               <div className="text-center text-green-400 text-sm font-semibold">
-                ✅ All files loaded successfully! You can now proceed to optimize.
+                All files loaded successfully! You can now proceed to optimize.
               </div>
             )}
           </div>
@@ -274,7 +273,7 @@ export default function DataInput() {
           {/* Information Box */}
           <div className="card-glow p-6 border-primary/20">
             <p className="text-sm text-foreground/80">
-              <strong>💡 Tip:</strong> If you don't have real data yet, use the "Sample Dataset" button above. 
+              <strong>Tip:</strong> If you don't have real data yet, use the "Sample Dataset" button above. 
               It loads example SAIL Bokaro data so you can see how the system works. Later, you can upload your real data files.
             </p>
           </div>
