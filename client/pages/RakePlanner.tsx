@@ -275,7 +275,7 @@ export default function RakePlanner() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="font-bold text-lg flex items-center gap-2">
-                    🚀 Ready to Dispatch
+                    Ready to Dispatch
                   </h3>
                   <p className="text-sm text-muted-foreground mt-1">
                     {approvedRakes.size} of {rakes.length} rakes approved
