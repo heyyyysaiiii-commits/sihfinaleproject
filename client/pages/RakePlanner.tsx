@@ -54,7 +54,7 @@ export default function RakePlanner() {
   });
 
   const handleApproveRake = (rakeId: string) => {
-    setApprovedRakes((prev) => new Set(prev).add(rakeId));
+    setApprovedRakes((prev) => new Set(prev).add(rakeId || ""));
   };
 
   const getRiskBadgeColor = (risk: string) => {
