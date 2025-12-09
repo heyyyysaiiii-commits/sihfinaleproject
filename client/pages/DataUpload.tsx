@@ -342,7 +342,7 @@ export default function DataUpload() {
 
               {/* Data Preview Modal */}
               {showPreview && uploadedFile?.data && (
-                <div className="card-glow p-6 space-y-4 border-primary/20 max-h-96 overflow-y-auto animate-fade-in">
+                <div className="card-glow p-6 space-y-4 border-primary/20 max-h-full overflow-y-auto animate-fade-in">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-foreground">Data Preview</h3>
                     <button
@@ -368,22 +368,75 @@ export default function DataUpload() {
                         </tr>
                       </thead>
                       <tbody>
-                        {uploadedFile.data.slice(0, 5).map((row, idx) => (
-                          <tr key={idx} className="border-b border-border/20 hover:bg-muted/10">
-                            {REQUIRED_COLUMNS.map((col) => (
-                              <td key={col} className="p-2 text-foreground/80 text-xs">
-                                {String(row[col] || "—")}
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
+                        {uploadedFile.data
+                          .slice(
+                            previewState.currentPage * previewState.rowsPerPage,
+                            (previewState.currentPage + 1) * previewState.rowsPerPage
+                          )
+                          .map((row, idx) => (
+                            <tr
+                              key={previewState.currentPage * previewState.rowsPerPage + idx}
+                              className="border-b border-border/20 hover:bg-muted/10"
+                            >
+                              {REQUIRED_COLUMNS.map((col) => (
+                                <td key={col} className="p-2 text-foreground/80 text-xs">
+                                  {String(row[col] || "—")}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                   </div>
 
-                  <p className="text-xs text-muted-foreground text-center pt-2">
-                    Showing {Math.min(5, uploadedFile.data.length)} of {uploadedFile.data.length} rows
-                  </p>
+                  {/* Pagination Controls */}
+                  <div className="flex items-center justify-between pt-4 border-t border-border/30">
+                    <p className="text-xs text-muted-foreground">
+                      Showing {previewState.currentPage * previewState.rowsPerPage + 1} to{" "}
+                      {Math.min((previewState.currentPage + 1) * previewState.rowsPerPage, uploadedFile.data.length)} of{" "}
+                      {uploadedFile.data.length} rows
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          setPreviewState((prev) => ({
+                            ...prev,
+                            currentPage: Math.max(0, prev.currentPage - 1),
+                          }))
+                        }
+                        disabled={previewState.currentPage === 0}
+                        className="border-primary/30 h-8"
+                      >
+                        Previous
+                      </Button>
+                      <span className="text-xs text-muted-foreground">
+                        Page {previewState.currentPage + 1} of{" "}
+                        {Math.ceil(uploadedFile.data.length / previewState.rowsPerPage)}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          setPreviewState((prev) => ({
+                            ...prev,
+                            currentPage: Math.min(
+                              Math.ceil(uploadedFile.data!.length / prev.rowsPerPage) - 1,
+                              prev.currentPage + 1
+                            ),
+                          }))
+                        }
+                        disabled={
+                          (previewState.currentPage + 1) * previewState.rowsPerPage >=
+                          uploadedFile.data.length
+                        }
+                        className="border-primary/30 h-8"
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
