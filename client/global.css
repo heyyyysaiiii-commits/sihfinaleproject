@@ -148,34 +148,34 @@
   .card-glass {
     @apply relative rounded-lg border border-border/30 bg-card/40 backdrop-blur-xl overflow-hidden;
     background-color: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 0 12px rgba(0, 252, 232, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 12px rgba(0, 252, 232, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.05);
   }
 
   .card-glass:hover {
     @apply border-border/60 transition-all duration-300;
-    box-shadow: 0 0 16px rgba(0, 252, 232, 0.16), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 16px rgba(0, 252, 232, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.05);
   }
 
   /* Premium Glow Card */
   .card-glow {
     @apply rounded-lg border border-border/40 bg-gradient-to-br from-card to-card/50 overflow-hidden;
-    box-shadow: 0 0 12px rgba(0, 252, 232, 0.12);
+    box-shadow: 0 0 12px rgba(0, 252, 232, 0.06);
   }
 
   .card-glow:hover {
     @apply border-primary/40 transition-all duration-300;
-    box-shadow: 0 0 16px rgba(0, 252, 232, 0.24);
+    box-shadow: 0 0 16px rgba(0, 252, 232, 0.12);
   }
 
   /* Gradient Button */
   .btn-gradient {
     @apply bg-gradient-to-r from-primary via-primary to-secondary hover:shadow-lg transition-all duration-300;
-    box-shadow: 0 0 12px rgba(0, 252, 232, 0.2);
+    box-shadow: 0 0 12px rgba(0, 252, 232, 0.1);
   }
 
   .btn-gradient:hover {
     @apply scale-105;
-    box-shadow: 0 0 20px rgba(0, 252, 232, 0.32);
+    box-shadow: 0 0 20px rgba(0, 252, 232, 0.16);
   }
 
   .btn-gradient:active {
@@ -190,7 +190,7 @@
 
   .btn-teal:hover {
     border-color: hsl(176 100% 50% / 0.6);
-    box-shadow: 0 0 12px rgba(0, 252, 232, 0.2);
+    box-shadow: 0 0 12px rgba(0, 252, 232, 0.1);
   }
 
   /* Subtle Input */
@@ -234,10 +234,10 @@
   @keyframes glow-pulse {
     0%,
     100% {
-      box-shadow: 0 0 12px rgba(0, 252, 232, 0.12);
+      box-shadow: 0 0 12px rgba(0, 252, 232, 0.06);
     }
     50% {
-      box-shadow: 0 0 20px rgba(0, 252, 232, 0.24);
+      box-shadow: 0 0 20px rgba(0, 252, 232, 0.12);
     }
   }
 
@@ -277,7 +277,7 @@
 
   .border-glow:hover {
     border-color: hsl(176 100% 50% / 0.8);
-    box-shadow: 0 0 12px rgba(0, 252, 232, 0.2);
+    box-shadow: 0 0 12px rgba(0, 252, 232, 0.1);
   }
 
   /* Responsive Typography */
