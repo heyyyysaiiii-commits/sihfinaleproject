@@ -64,7 +64,7 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Problem Card 1 */}
-              <div className="card-glass p-8 space-y-4 border border-rose-500/30 group hover:border-rose-500/60 transition-all">
+              <div className="card-glass p-8 space-y-4 border border-rose-500/30 group hover:border-rose-500/60 transition-all stagger-item">
                 <div className="w-12 h-12 rounded-lg bg-rose-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <AlertCircle className="w-6 h-6 text-rose-400" />
                 </div>
