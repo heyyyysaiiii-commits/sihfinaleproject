@@ -82,10 +82,9 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
   if (!orders || orders.length === 0) return [];
 
   const result: RakePlanItem[] = [];
-  const processedOrders = new Set<string>();
   let rakeCounter = 1;
 
-  // First pass: Group orders by destination and create rakes
+  // First pass: Group orders by destination
   const ordersByDestination: { [key: string]: OrderData[] } = {};
   orders.forEach((order) => {
     const dest = order.destination || "Unknown";
@@ -95,7 +94,7 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
     ordersByDestination[dest].push(order);
   });
 
-  // Second pass: Create rakes for each destination group
+  // Second pass: Create rakes for each destination group with proper capacity constraints
   Object.entries(ordersByDestination).forEach(([destination, destOrders]) => {
     // Sort by priority (higher first) and distance (longer first)
     const sorted = [...destOrders].sort((a, b) => {
@@ -105,29 +104,27 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
     });
 
     // Create sub-rakes for this destination group
+    let currentRakeId = `R${rakeCounter}`;
     let currentRakeQuantity = 0;
     let currentWagonIndex = 0;
-    let currentRakeId = `R${rakeCounter}`;
     let platformIndex = 1;
 
     for (const order of sorted) {
-      if (processedOrders.has(order.order_id)) continue;
-
       const transportMode = determineTransportMode(
         order.quantity_tonnes,
         order.distance_km || 800,
         order.priority || 3
       );
 
-      // Check if adding this order would exceed rake wagon capacity
+      // Calculate required wagons for this order
       const requiredWagons = Math.ceil(order.quantity_tonnes / WAGON_CAPACITY_TONNES);
-      
-      // If this order would exceed current rake capacity, create new rake
-      if (
-        currentWagonIndex + requiredWagons > RAKE_WAGON_COUNT ||
-        (currentRakeQuantity > 0 &&
-          (currentRakeQuantity + order.quantity_tonnes) / (WAGON_CAPACITY_TONNES * RAKE_WAGON_COUNT) > MAX_RAKE_UTILIZATION)
-      ) {
+
+      // Check if adding this order would exceed wagon capacity
+      const canFitInCurrentRake = currentWagonIndex + requiredWagons <= RAKE_WAGON_COUNT &&
+        currentRakeQuantity + order.quantity_tonnes <= (WAGON_CAPACITY_TONNES * RAKE_WAGON_COUNT * MAX_RAKE_UTILIZATION);
+
+      // If order cannot fit in current rake, create a new rake
+      if (currentRakeQuantity > 0 && !canFitInCurrentRake) {
         rakeCounter++;
         currentRakeId = `R${rakeCounter}`;
         currentWagonIndex = 0;
@@ -139,7 +136,7 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
       const wagonId = `W${currentRakeId}-${currentWagonIndex + 1}`;
       const platformId = `P${platformIndex}`;
       const craneCapacity = CRANE_CAPACITY_TONNES;
-      const utilization = (order.quantity_tonnes / craneCapacity) * 100;
+      const utilization = Math.min((order.quantity_tonnes / craneCapacity) * 100, 100);
       const cost = calculateCost(order.quantity_tonnes, transportMode);
 
       const explanation = `ORDER #${order.order_id} (${order.product_type} from ${order.customer_name}) is allocated to WAGON ${wagonId} of RAKE ${currentRakeId} at PLATFORM ${platformId}. Crane capacity: ${craneCapacity} MT. Destination: ${destination}.`;
@@ -157,7 +154,7 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
         wagon_index: currentWagonIndex + 1,
         platform_id: platformId,
         crane_capacity_tonnes: craneCapacity,
-        utilization_percent: Math.round(Math.min(utilization, 100) * 10) / 10,
+        utilization_percent: Math.round(utilization * 10) / 10,
         estimated_cost: cost,
         explanation,
         reason,
@@ -166,7 +163,6 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
         status: "pending",
       });
 
-      processedOrders.add(order.order_id);
       currentRakeQuantity += order.quantity_tonnes;
       currentWagonIndex += requiredWagons;
       if (platformIndex < 3) platformIndex++;
