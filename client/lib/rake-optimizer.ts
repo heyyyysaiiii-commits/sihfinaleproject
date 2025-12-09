@@ -237,9 +237,14 @@ function packOrdersIntoRakes(orders: OrderData[]): RakePlanItem[] {
     sorted.forEach((order) => {
       let assigned = false;
 
-      // Try to fit into existing rake in this cluster
+      // Try to fit into existing rake with SAME destination (critical fix!)
       for (let i = 0; i < rakes.length; i++) {
         const rake = rakes[i];
+        // Only consider rakes that serve the same destination
+        if (!rake.destinations.has(order.destination)) {
+          continue; // Skip rakes with different destinations
+        }
+
         const check = canAddOrderToRake(rake, order, false);
 
         if (check.canAdd) {
