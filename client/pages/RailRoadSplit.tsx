@@ -17,6 +17,7 @@ interface SplitData {
 }
 
 export default function RailRoadSplit() {
+  const navigate = useNavigate();
   const [splitData, setSplitData] = useState<SplitData>({
     railOrders: 0,
     railQuantity: 0,
