@@ -257,7 +257,7 @@ export default function Orders() {
               <Alert className="border-green-500/30 bg-green-500/10">
                 <CheckCircle className="h-4 w-4 text-green-400" />
                 <AlertDescription className="text-green-300 text-sm">
-                  This assignment will be included in your final Rake Plan. Approve it in the Rake Planner tab.
+                  View the complete rake plan and detailed wagon assignments in the Rake Planner tab.
                 </AlertDescription>
               </Alert>
             </div>
