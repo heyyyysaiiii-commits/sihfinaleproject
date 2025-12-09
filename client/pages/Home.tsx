@@ -12,7 +12,7 @@ export default function Home() {
           {/* Hero Section */}
           <div className="space-y-4 animate-fade-in text-center">
             <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              🔷 OptiRake DSS
+              OptiRake DSS
             </h1>
             <p className="text-xl text-foreground/90 max-w-3xl mx-auto leading-relaxed">
               Reduces logistics cost and delays by automatically deciding how customer orders should be assigned to rakes (trainloads) in the most efficient way.
