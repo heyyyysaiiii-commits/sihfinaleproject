@@ -193,7 +193,7 @@ export default function About() {
               <div className="space-y-4 border-t border-border/30 pt-6">
                 <div className="space-y-1">
                   <p className="font-semibold text-foreground">Sai Charan Devisetty</p>
-                  <p className="text-sm text-primary font-medium">Lead Developer & Quantum ML Engineer</p>
+                  <p className="text-sm text-primary font-medium">Lead Developer & AI Engineer</p>
                 </div>
 
                 <div className="space-y-1">
