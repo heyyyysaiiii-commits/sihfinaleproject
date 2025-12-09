@@ -203,7 +203,7 @@ export default function DataUpload() {
             {/* Upload Area - 2 Columns */}
             <div className="lg:col-span-2 space-y-8">
               {/* Drag-Drop Zone - Premium */}
-              <div
+            <div
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
@@ -272,9 +272,9 @@ export default function DataUpload() {
                 className="hidden"
               />
 
-              {/* Validation Stats */}
-              {uploadedFile && (
-                <div className="grid grid-cols-3 gap-4 animate-fade-in">
+            {/* Validation Stats */}
+            {uploadedFile && (
+              <div className="grid grid-cols-3 gap-4 animate-fade-in">
                   <div className="card-glow p-6 space-y-2 border-emerald-500/20">
                     <p className="kpi-label">Valid Orders</p>
                     <p className="text-3xl font-bold text-emerald-400">{uploadedFile.validRows}</p>
@@ -306,9 +306,9 @@ export default function DataUpload() {
                 </div>
               )}
 
-              {/* Action Buttons */}
-              {uploadedFile && uploadedFile.status === "success" && (
-                <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
+            {/* Action Buttons */}
+            {uploadedFile && uploadedFile.status === "success" && (
+              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
                   <Button
                     onClick={handleProceed}
                     className="btn-gradient flex-1 h-12 text-base font-semibold"
