@@ -33,9 +33,9 @@ export default function Orders() {
   };
 
   const getPriorityLabel = (priority: number) => {
-    if (priority === 1) return "🔥 High";
-    if (priority === 2) return "⭐ Medium";
-    return "🕒 Urgent";
+    if (priority === 1) return "High";
+    if (priority === 2) return "Medium";
+    return "Low";
   };
 
   const orders: Order[] = sampleDataset?.orders || [];
