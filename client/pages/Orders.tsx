@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Sheet,
@@ -11,23 +10,13 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Separator } from "@/components/ui/separator";
-import {
-  Package,
-  MapPin,
-  Clock,
-  AlertCircle,
-  CheckCircle,
-  ArrowRight,
-  Lightbulb,
-} from "lucide-react";
+import { MapPin, Clock, Package, Lightbulb, CheckCircle, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { Order, OptimizeRakesResponse } from "@shared/api";
+import { Order } from "@shared/api";
 
 export default function Orders() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
-  const [hoveredRow, setHoveredRow] = useState<string | null>(null);
 
   const { data: sampleDataset } = useQuery({
     queryKey: ["sample-dataset"],
@@ -37,43 +26,16 @@ export default function Orders() {
     },
   });
 
-  const { data: optimizationResult } = useQuery({
-    queryKey: ["optimization-for-orders"],
-    enabled: !!sampleDataset,
-    queryFn: async () => {
-      if (!sampleDataset) return null;
-      const res = await fetch("/api/optimize-rakes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...sampleDataset,
-          config: {
-            cost_vs_sla_weight: 0.6,
-            allow_multi_destination_rakes: true,
-            min_utilization_percent: 75,
-          },
-        }),
-      });
-      return (await res.json()) as OptimizeRakesResponse;
-    },
-  });
-
   const getPriorityColor = (priority: number) => {
     if (priority === 1) return "badge-priority-high";
     if (priority === 2) return "badge-priority-medium";
     return "badge-priority-time-critical";
   };
 
-  const getPriorityEmoji = (priority: number) => {
-    if (priority === 1) return "🔥";
-    if (priority === 2) return "⭐";
-    return "🕒";
-  };
-
   const getPriorityLabel = (priority: number) => {
-    if (priority === 1) return "High Priority";
-    if (priority === 2) return "Medium Priority";
-    return "Time-Critical";
+    if (priority === 1) return "🔥 High";
+    if (priority === 2) return "⭐ Medium";
+    return "🕒 Urgent";
   };
 
   const orders: Order[] = sampleDataset?.orders || [];
@@ -81,103 +43,122 @@ export default function Orders() {
   return (
     <Layout>
       <div className="flex-1 overflow-auto bg-gradient-to-b from-background via-background to-secondary/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-          {/* Page Header */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+          {/* Header */}
           <div className="space-y-2 animate-fade-in">
-            <h1 className="text-title-lg flex items-center gap-2">
-              <span className="text-2xl">📦</span> Customer Orders
-            </h1>
-            <p className="text-subtitle">
-              {orders.length} orders to fulfill · AI recommends the best rake for each
+            <h1 className="text-4xl font-bold text-foreground">📋 Customer Orders</h1>
+            <p className="text-lg text-muted-foreground">
+              {orders.length} pending orders waiting for the best rake assignment
             </p>
           </div>
 
-          {/* Orders List */}
-          <div className="space-y-3 animate-scale-in">
-            {orders.length === 0 ? (
-              <Card className="border-border/50 bg-card/50">
-                <CardContent className="pt-6 text-center text-muted-foreground">
-                  Loading orders...
-                </CardContent>
-              </Card>
-            ) : (
-              orders.map((order) => {
-                const slaDeadline = new Date(order.sla_deadline);
-                const daysUntilDeadline = Math.ceil(
-                  (slaDeadline.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
-                );
-                const isAtRisk = daysUntilDeadline <= 2;
+          {/* Orders Table */}
+          <div className="card-glow overflow-hidden animate-scale-in">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-muted/50 border-b border-primary/20">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase">
+                      Order ID
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase">
+                      Destination
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase">
+                      Material
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase">
+                      Qty (tonnes)
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase">
+                      Priority
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase">
+                      Due Date
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-primary/10">
+                  {orders.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="px-6 py-8 text-center text-muted-foreground">
+                        No orders loaded. Go to Data Input to upload order data.
+                      </td>
+                    </tr>
+                  ) : (
+                    orders.map((order) => {
+                      const dueDate = new Date(order.due_date);
+                      const daysUntil = Math.ceil(
+                        (dueDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+                      );
 
-                return (
-                  <div
-                    key={order.order_id}
-                    className="card-glow p-4 sm:p-6"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                      {/* Left Section - Order Info */}
-                      <div className="flex-1 space-y-3">
-                        <div className="flex items-start gap-3">
-                          <span className="text-2xl">📍</span>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <h3 className="font-bold text-lg">{order.order_id}</h3>
-                              <div className={getPriorityColor(order.priority)}>
-                                {getPriorityEmoji(order.priority)} {getPriorityLabel(order.priority)}
-                              </div>
-                              {isAtRisk && (
-                                <div className="badge-sla-risk">⏰ Urgent</div>
-                              )}
+                      return (
+                        <tr key={order.order_id} className="hover:bg-muted/30 transition-colors">
+                          <td className="px-6 py-4">
+                            <p className="font-semibold text-foreground">{order.order_id}</p>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-1">
+                              <MapPin className="w-4 h-4 text-primary" />
+                              <span className="text-foreground">{order.destination}</span>
                             </div>
-
-                            {/* Order Details */}
-                            <div className="space-y-2 mt-2 text-sm">
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <MapPin className="w-4 h-4" />
-                                <span className="font-medium text-foreground">{order.destination}</span>
-                              </div>
-
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <Package className="w-4 h-4" />
-                                <span>{order.quantity_tonnes}t of {order.material_id}</span>
-                              </div>
-
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <Clock className="w-4 h-4" />
-                                <span>
-                                  Due: {new Date(order.sla_deadline).toLocaleDateString()}
-                                  {daysUntilDeadline >= 0 && (
-                                    <span className={daysUntilDeadline <= 2 ? "text-red-400 font-semibold ml-2" : "text-green-400 ml-2"}>
-                                      ({daysUntilDeadline} days)
-                                    </span>
-                                  )}
-                                </span>
-                              </div>
+                          </td>
+                          <td className="px-6 py-4 text-foreground text-sm">{order.material_id}</td>
+                          <td className="px-6 py-4">
+                            <span className="font-semibold text-foreground">{order.quantity_tonnes}t</span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className={getPriorityColor(order.priority)}>
+                              {getPriorityLabel(order.priority)}
                             </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Right Section - Action */}
-                      <div className="flex flex-col gap-2">
-                        <Button
-                          onClick={() => {
-                            setSelectedOrder(order);
-                            setShowExplanation(true);
-                          }}
-                          className="btn-gradient whitespace-nowrap"
-                        >
-                          Best Fit <ArrowRight className="w-3 h-3 ml-1" />
-                        </Button>
-                        <p className="text-xs text-muted-foreground text-center">
-                          See AI recommendation
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            )}
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm">
+                              <p className="text-foreground font-medium">
+                                {dueDate.toLocaleDateString()}
+                              </p>
+                              <p
+                                className={`text-xs mt-0.5 ${
+                                  daysUntil <= 2 ? "text-red-400" : "text-green-400"
+                                }`}
+                              >
+                                {daysUntil > 0 ? `${daysUntil} days` : "Overdue"}
+                              </p>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <Button
+                              size="sm"
+                              onClick={() => {
+                                setSelectedOrder(order);
+                                setShowExplanation(true);
+                              }}
+                              className="btn-gradient text-xs h-8 gap-1"
+                            >
+                              Best Fit <ArrowRight className="w-3 h-3" />
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
+
+          {/* Summary */}
+          {orders.length > 0 && (
+            <div className="card-glow p-6 border-primary/30 space-y-3">
+              <p className="text-sm text-foreground/80">
+                <strong>💡 How it works:</strong> Click "Best Fit" for any order to see which rake it should go into 
+                and why. The system recommends the best assignment based on cost, delivery time, and wagon availability.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -189,86 +170,98 @@ export default function Orders() {
               {selectedOrder && `Best Fit for ${selectedOrder.order_id}`}
             </SheetTitle>
             <SheetDescription>
-              AI-recommended rake assignment
+              AI-recommended rake assignment with reasoning
             </SheetDescription>
           </SheetHeader>
 
           {selectedOrder && (
-            <div className="explanation-panel">
-              <div className="space-y-6 mt-6">
-                {/* AI Recommendation */}
-                <div className="frosted-glass p-4 border-l-2 border-primary space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Lightbulb className="w-5 h-5 text-primary" />
-                    <p className="font-semibold text-foreground">AI Recommendation</p>
+            <div className="space-y-6 mt-6">
+              {/* Order Summary */}
+              <div className="frosted-glass p-4 space-y-2">
+                <p className="text-xs font-semibold text-muted-foreground uppercase">Order Details</p>
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Destination:</span>
+                    <span className="font-medium text-foreground">{selectedOrder.destination}</span>
                   </div>
-                  <p className="text-sm text-foreground/90 leading-relaxed">
-                    <strong>Rake #001</strong> from <strong>Bokara Yard-2</strong> at <strong>92% utilization</strong> — arrives{" "}
-                    <strong>20 hours before</strong> your SLA deadline.
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Quantity:</span>
+                    <span className="font-medium text-foreground">{selectedOrder.quantity_tonnes}t</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Material:</span>
+                    <span className="font-medium text-foreground">{selectedOrder.material_id}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Due:</span>
+                    <span className="font-medium text-foreground">
+                      {new Date(selectedOrder.due_date).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Recommendation */}
+              <div className="border-l-2 border-primary pl-4 py-2 space-y-3">
+                <div className="flex items-start gap-2">
+                  <Lightbulb className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-foreground text-sm">Recommended Rake</p>
+                    <p className="text-lg font-bold text-primary mt-1">Rake #001</p>
+                  </div>
+                </div>
+
+                <div className="space-y-2 text-sm text-foreground/80">
+                  <p>
+                    <strong>From:</strong> Bokaro Yard-2
+                  </p>
+                  <p>
+                    <strong>Utilization:</strong> 92% (excellent packing)
+                  </p>
+                  <p>
+                    <strong>Arrival:</strong> 20 hours before SLA deadline
                   </p>
                 </div>
-
-                {/* Why This is Best */}
-                <div className="space-y-3">
-                  <p className="font-semibold text-foreground">Why This Works:</p>
-
-                  <div className="explanation-item">
-                    <span className="explanation-item icon">✅</span>
-                    <div className="explanation-item text">
-                      Same destination as existing orders in Rake #001
-                    </div>
-                  </div>
-
-                  <div className="explanation-item">
-                    <span className="explanation-item icon">💰</span>
-                    <div className="explanation-item text">
-                      Saves ₹15,200 by grouping with other orders (no separate rake)
-                    </div>
-                  </div>
-
-                  <div className="explanation-item">
-                    <span className="explanation-item icon">📊</span>
-                    <div className="explanation-item text">
-                      Utilization reaches 92% — less empty wagon space wasted
-                    </div>
-                  </div>
-
-                  <div className="explanation-item">
-                    <span className="explanation-item icon">⏱️</span>
-                    <div className="explanation-item text">
-                      Arrives 20 hours before deadline — no late penalties
-                    </div>
-                  </div>
-
-                  <div className="explanation-item">
-                    <span className="explanation-item icon">🚆</span>
-                    <div className="explanation-item text">
-                      100% rail transport — reliable & faster than road
-                    </div>
-                  </div>
-                </div>
-
-                {/* Alternative Options */}
-                <div className="space-y-3 pt-4 border-t border-primary/20">
-                  <p className="font-semibold text-foreground text-sm">Other Options</p>
-                  <div className="space-y-2">
-                    <div className="text-xs text-muted-foreground bg-muted/20 p-3 rounded">
-                      • <strong>Rake #002:</strong> 78% utilization, arrives 8 hours before deadline (+₹8,500 cost)
-                    </div>
-                    <div className="text-xs text-muted-foreground bg-muted/20 p-3 rounded">
-                      • <strong>Road Transport:</strong> Next day delivery (+₹22,000 cost, lower reliability)
-                    </div>
-                  </div>
-                </div>
-
-                {/* Approval Button */}
-                <Button
-                  className="btn-gradient w-full h-10 mt-6"
-                  onClick={() => setShowExplanation(false)}
-                >
-                  👍 Approve This Assignment
-                </Button>
               </div>
+
+              {/* Why This Works */}
+              <div className="space-y-3">
+                <p className="font-semibold text-foreground text-sm">Why This is the Best Option</p>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-foreground/80">
+                      <strong>Cost Savings:</strong> Saves ₹15,200 by grouping with other orders
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-foreground/80">
+                      <strong>Efficient Loading:</strong> Improves rake utilization to 92%
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-foreground/80">
+                      <strong>On-Time Delivery:</strong> Arrives 20 hours before your deadline
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-foreground/80">
+                      <strong>Reliable Transport:</strong> 100% rail (faster than mixed modes)
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action */}
+              <Alert className="border-green-500/30 bg-green-500/10">
+                <CheckCircle className="h-4 w-4 text-green-400" />
+                <AlertDescription className="text-green-300 text-sm">
+                  This assignment will be included in your final Rake Plan. Approve it in the Rake Planner tab.
+                </AlertDescription>
+              </Alert>
             </div>
           )}
         </SheetContent>
