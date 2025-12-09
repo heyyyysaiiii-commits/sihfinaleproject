@@ -509,36 +509,50 @@ export default function DataInput() {
                     </div>
                   )}
 
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => handleFileSelect(config.id)}
-                      variant={isUploaded ? "outline" : "default"}
-                      className={isUploaded ? "w-full opacity-50" : "btn-gradient w-full"}
-                    >
-                      <Upload className="w-4 h-4 mr-2" />
-                      {isUploaded ? "Uploaded" : "Upload CSV"}
-                    </Button>
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() => handleFileSelect(config.id)}
+                        variant={isUploaded ? "outline" : "default"}
+                        className={isUploaded ? "flex-1 opacity-50" : "btn-gradient flex-1"}
+                      >
+                        <Upload className="w-4 h-4 mr-2" />
+                        {isUploaded ? "Uploaded" : "Upload CSV"}
+                      </Button>
 
-                    {isUploaded && (
-                      <>
-                        <Button
-                          onClick={() => handlePreviewFile(config.id)}
-                          variant="outline"
-                          size="icon"
-                          className="border-primary/30"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          onClick={() => handleRemoveFile(config.id)}
-                          variant="outline"
-                          size="icon"
-                          className="border-red-500/30 text-red-400 hover:bg-red-500/10"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </>
-                    )}
+                      <Button
+                        onClick={() => downloadCSVTemplate(config.id, config.name)}
+                        variant="outline"
+                        size="icon"
+                        className="border-primary/30"
+                        title="Download template"
+                      >
+                        <Download className="w-4 h-4" />
+                      </Button>
+
+                      {isUploaded && (
+                        <>
+                          <Button
+                            onClick={() => handlePreviewFile(config.id)}
+                            variant="outline"
+                            size="icon"
+                            className="border-primary/30"
+                            title="Preview data"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            onClick={() => handleRemoveFile(config.id)}
+                            variant="outline"
+                            size="icon"
+                            className="border-red-500/30 text-red-400 hover:bg-red-500/10"
+                            title="Remove file"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </div>
 
                   <input
