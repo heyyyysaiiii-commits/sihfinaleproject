@@ -495,9 +495,13 @@ export default function DataInput() {
               return (
                 <div
                   key={config.id}
-                  className={`card-glow p-6 space-y-4 transition-all ${
+                  className={`card-glow p-6 space-y-4 transition-all cursor-pointer ${
                     hasError ? "border-red-500/30 bg-red-500/5" : ""
-                  }`}
+                  } ${dragOverFile === config.id ? "border-primary/60 bg-primary/5" : ""}`}
+                  onDragOver={(e) => handleDragOver(e, config.id)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, config.id)}
+                  onClick={() => !isUploaded && handleFileSelect(config.id)}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
