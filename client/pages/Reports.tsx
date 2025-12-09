@@ -65,7 +65,7 @@ export default function Reports() {
     );
   }
 
-  const summary = optimizationResult.summary;
+  const kpi = optimizationResult.kpi_summary;
 
   // Mock trend data for visualization
   const costTrendData = [
@@ -74,7 +74,7 @@ export default function Reports() {
     { day: "Wed", baseline: 55000, optimized: 49800 },
     { day: "Thu", baseline: 60000, optimized: 52500 },
     { day: "Fri", baseline: 58000, optimized: 50200 },
-    { day: "Today", baseline: 44930, optimized: summary.total_cost },
+    { day: "Today", baseline: 44930, optimized: kpi.total_cost_optimized },
   ];
 
   const utilizationTrendData = [
@@ -83,7 +83,7 @@ export default function Reports() {
     { day: "Wed", utilization: 72 },
     { day: "Thu", utilization: 70 },
     { day: "Fri", utilization: 75 },
-    { day: "Today", utilization: summary.avg_utilization },
+    { day: "Today", utilization: kpi.average_rake_utilization_percent },
   ];
 
   const handleExportCSV = () => {
