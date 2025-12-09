@@ -172,7 +172,7 @@ export default function RakePlanner() {
 
                 return (
                   <div
-                    key={rake.rake_id}
+                    key={rake.planned_rake_id || rake.rake_id}
                     className="card-glow p-4 sm:p-6 cursor-pointer hover:scale-105 transition-all"
                     onClick={() => {
                       setSelectedRake(rake);
@@ -183,14 +183,14 @@ export default function RakePlanner() {
                       {/* Left Section - Rake Info */}
                       <div className="flex-1 space-y-3">
                         <div className="flex items-start gap-2">
-                          <span className="text-2xl">{getRailModeIcon(rake.rail_percent)}</span>
+                          <span className="text-2xl">🚆</span>
                           <div>
                             <h3 className="font-bold text-lg">
                               Rake #{rake.rake_id.split("_")[1]} · {rake.rake_id}
                             </h3>
                             <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
                               <MapPin className="w-4 h-4" />
-                              {rake.destination || "Multiple destinations"}
+                              {rake.primary_destination || "Multiple destinations"}
                             </div>
                           </div>
                         </div>
@@ -199,28 +199,22 @@ export default function RakePlanner() {
                         <div className="flex flex-wrap items-center gap-4 text-sm">
                           <div className="flex items-center gap-1">
                             <Package className="w-4 h-4 text-primary" />
-                            <span className="text-foreground font-medium">{rake.orders_count || 0} orders</span>
-                            <span className="text-muted-foreground">· {rake.total_tonnage}t</span>
+                            <span className="text-foreground font-medium">{rake.orders_allocated.length} orders</span>
+                            <span className="text-muted-foreground">· {rake.total_tonnage_assigned.toFixed(0)}t</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="w-4 h-4 text-primary" />
                             <span className="text-foreground font-medium">Departs</span>
-                            <span className="text-muted-foreground">{rake.departure_time}</span>
+                            <span className="text-muted-foreground">{new Date(rake.departure_time).toLocaleTimeString()}</span>
                           </div>
                         </div>
 
                         {/* Status Badges */}
                         <div className="flex flex-wrap gap-2">
-                          {rake.rail_percent === 100 ? (
-                            <div className="badge-rail-only">🚆 Rail only</div>
-                          ) : rake.rail_percent && rake.rail_percent > 0 ? (
-                            <div className="badge-mixed">🚚 Mixed mode</div>
-                          ) : (
-                            <div className="badge-mixed">🚚 Road transport</div>
-                          )}
+                          <div className="badge-rail-only">🚆 Rail</div>
 
-                          {rake.sla_risk === "HIGH" && (
-                            <div className="badge-sla-risk">🔴 SLA Risk</div>
+                          {rake.sla_status === "At-Risk" && (
+                            <div className="badge-sla-risk">🔴 At Risk</div>
                           )}
 
                           {utilization < 70 && (
@@ -234,13 +228,13 @@ export default function RakePlanner() {
                         {/* Utilization & Cost */}
                         <div className="text-right">
                           <p className={`text-3xl font-bold ${getUtilizationColor(utilization)}`}>
-                            {utilization}%
+                            {utilization.toFixed(0)}%
                           </p>
                           <p className="text-xs text-muted-foreground">Utilization</p>
                         </div>
 
                         <div className="text-right">
-                          <p className="text-lg font-bold text-primary">₹{(rake.total_cost / 1000).toFixed(1)}k</p>
+                          <p className="text-lg font-bold text-primary">₹{(rake.cost_breakdown.total_cost / 1000).toFixed(1)}k</p>
                           <p className="text-xs text-muted-foreground">Total Cost</p>
                         </div>
 
