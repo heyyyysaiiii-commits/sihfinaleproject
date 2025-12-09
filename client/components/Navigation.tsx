@@ -1,14 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
 import {
   BarChart3,
+  Upload,
+  Zap,
   Truck,
-  Package,
-  Warehouse,
+  TrendingUp,
   FileText,
   Settings as SettingsIcon,
+  MessageCircle,
   Menu,
   X,
-  Upload,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -21,10 +22,13 @@ export function Navigation() {
 
   const navItems = [
     { path: "/dashboard", label: "Dashboard", icon: BarChart3 },
-    { path: "/data-input", label: "Import Data", icon: Upload },
-    { path: "/rake-formation", label: "Rake Formation", icon: Truck },
+    { path: "/data-upload", label: "Data Upload", icon: Upload },
+    { path: "/optimization-run", label: "Optimization Run", icon: Zap },
+    { path: "/rake-plan-dispatch", label: "Rake Plan & Dispatch", icon: Truck },
+    { path: "/rail-road-split", label: "Rail vs Road Split", icon: TrendingUp },
+    { path: "/reports", label: "Reports", icon: FileText },
     { path: "/settings", label: "Settings", icon: SettingsIcon },
-    { path: "/admin-console", label: "Admin Console", icon: FileText },
+    { path: "/help", label: "Help / AI Assistant", icon: MessageCircle },
   ];
 
   const isActive = (path: string) =>
@@ -124,7 +128,7 @@ export function Navigation() {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors text-sm font-medium",
+                  "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors text-sm font-medium whitespace-nowrap",
                   isActive(item.path)
                     ? "bg-primary text-primary-foreground"
                     : "text-foreground hover:bg-muted"
