@@ -75,7 +75,7 @@ export default function Home() {
               </div>
 
               {/* Problem Card 2 */}
-              <div className="card-glass p-8 space-y-4 border border-rose-500/30 group hover:border-rose-500/60 transition-all">
+              <div className="card-glass p-8 space-y-4 border border-rose-500/30 group hover:border-rose-500/60 transition-all stagger-item">
                 <div className="w-12 h-12 rounded-lg bg-rose-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <DollarSign className="w-6 h-6 text-rose-400" />
                 </div>
@@ -86,7 +86,7 @@ export default function Home() {
               </div>
 
               {/* Problem Card 3 */}
-              <div className="card-glass p-8 space-y-4 border border-rose-500/30 group hover:border-rose-500/60 transition-all">
+              <div className="card-glass p-8 space-y-4 border border-rose-500/30 group hover:border-rose-500/60 transition-all stagger-item">
                 <div className="w-12 h-12 rounded-lg bg-rose-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Clock className="w-6 h-6 text-rose-400" />
                 </div>
@@ -112,7 +112,7 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Solution Card 1 */}
-              <div className="card-glass p-8 space-y-4 border border-primary/30 group hover:border-primary/60 transition-all">
+              <div className="card-glass p-8 space-y-4 border border-primary/30 group hover:border-primary/60 transition-all stagger-item">
                 <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Zap className="w-6 h-6 text-primary" />
                 </div>
@@ -123,7 +123,7 @@ export default function Home() {
               </div>
 
               {/* Solution Card 2 */}
-              <div className="card-glass p-8 space-y-4 border border-primary/30 group hover:border-primary/60 transition-all">
+              <div className="card-glass p-8 space-y-4 border border-primary/30 group hover:border-primary/60 transition-all stagger-item">
                 <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <TrendingUp className="w-6 h-6 text-primary" />
                 </div>
@@ -134,7 +134,7 @@ export default function Home() {
               </div>
 
               {/* Solution Card 3 */}
-              <div className="card-glass p-8 space-y-4 border border-primary/30 group hover:border-primary/60 transition-all">
+              <div className="card-glass p-8 space-y-4 border border-primary/30 group hover:border-primary/60 transition-all stagger-item">
                 <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <CheckCircle2 className="w-6 h-6 text-primary" />
                 </div>
@@ -160,7 +160,7 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Feature 1 */}
-              <div className="card-glow p-8 space-y-4 border border-primary/20">
+              <div className="card-glow p-8 space-y-4 border border-primary/20 stagger-item">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
                     <Truck className="w-5 h-5 text-primary" />
@@ -175,7 +175,7 @@ export default function Home() {
               </div>
 
               {/* Feature 2 */}
-              <div className="card-glow p-8 space-y-4 border border-primary/20">
+              <div className="card-glow p-8 space-y-4 border border-primary/20 stagger-item">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
                     <TrendingUp className="w-5 h-5 text-primary" />
@@ -190,7 +190,7 @@ export default function Home() {
               </div>
 
               {/* Feature 3 */}
-              <div className="card-glow p-8 space-y-4 border border-primary/20">
+              <div className="card-glow p-8 space-y-4 border border-primary/20 stagger-item">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
                     <BarChart3 className="w-5 h-5 text-primary" />
@@ -205,7 +205,7 @@ export default function Home() {
               </div>
 
               {/* Feature 4 */}
-              <div className="card-glow p-8 space-y-4 border border-primary/20">
+              <div className="card-glow p-8 space-y-4 border border-primary/20 stagger-item">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
                     <CheckCircle2 className="w-5 h-5 text-primary" />
