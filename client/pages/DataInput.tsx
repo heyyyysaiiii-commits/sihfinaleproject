@@ -165,7 +165,7 @@ export default function DataInput() {
 
   const handlePreviewFile = () => {
     if (!uploadedFile?.data) return;
-    const csvContent = parseCSV(
+    const csvContent = parsePreviewCSV(
       REQUIRED_COLUMNS.join(",") +
         "\n" +
         uploadedFile.data
@@ -175,7 +175,7 @@ export default function DataInput() {
               if (typeof val === "string" && val.includes(",")) {
                 return `"${val}"`;
               }
-              return val;
+              return String(val || "");
             }).join(",")
           )
           .join("\n")
@@ -217,7 +217,7 @@ export default function DataInput() {
   };
 
   // Helper: Parse CSV for preview
-  function parseCSV(csvContent: string) {
+  function parsePreviewCSV(csvContent: string) {
     const lines = csvContent.split("\n").filter(line => line.trim());
     if (lines.length === 0) {
       return { headers: [], rows: [] };
