@@ -214,21 +214,11 @@ export default function Orders() {
                 <div className="flex items-start gap-2">
                   <Lightbulb className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold text-foreground text-sm">Recommended Rake</p>
-                    <p className="text-lg font-bold text-primary mt-1">Rake #001</p>
+                    <p className="font-semibold text-foreground text-sm">Allocation Details</p>
+                    <p className="text-sm text-foreground/80 mt-2">
+                      This order will be assigned to an optimal rake based on destination, material compatibility, priority, and delivery timelines.
+                    </p>
                   </div>
-                </div>
-
-                <div className="space-y-2 text-sm text-foreground/80">
-                  <p>
-                    <strong>From:</strong> Bokaro Yard-2
-                  </p>
-                  <p>
-                    <strong>Utilization:</strong> 92% (excellent packing)
-                  </p>
-                  <p>
-                    <strong>Arrival:</strong> 20 hours before SLA deadline
-                  </p>
                 </div>
               </div>
 
