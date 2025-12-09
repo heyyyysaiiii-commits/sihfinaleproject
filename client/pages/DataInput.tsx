@@ -42,6 +42,7 @@ export default function DataInput() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [previewData, setPreviewData] = useState<PreviewData | null>(null);
   const [showPreviewDialog, setShowPreviewDialog] = useState(false);
+  const [dragOverFile, setDragOverFile] = useState<string | null>(null);
 
   const fileConfigs = [
     {
