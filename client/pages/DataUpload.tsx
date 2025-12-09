@@ -517,16 +517,17 @@ function generateSampleOrders() {
   const customers = ["ABC Corp", "XYZ Ltd", "Steel Solutions", "logistics Hub", "National Distributors", "Prime Steel", "Mega Traders"];
 
   const orders = [];
-  for (let i = 1; i <= 19; i++) {
+  // Generate 100 orders to properly test multi-rake distribution
+  for (let i = 1; i <= 100; i++) {
     orders.push({
       order_id: `ORD-${String(i).padStart(3, "0")}`,
       customer_name: customers[Math.floor(Math.random() * customers.length)],
       customer_location: destinations[Math.floor(Math.random() * destinations.length)],
       product_type: products[Math.floor(Math.random() * products.length)],
       material_grade: grades[Math.floor(Math.random() * grades.length)],
-      quantity_tonnes: Math.round((40 + Math.random() * 60) * 10) / 10,
+      quantity_tonnes: Math.round((30 + Math.random() * 50) * 10) / 10,
       destination: destinations[Math.floor(Math.random() * destinations.length)],
-      priority: i <= 5 ? 1 : i <= 12 ? 2 : 3,
+      priority: i <= 20 ? 1 : i <= 60 ? 2 : 3,
       due_date: "2025-12-25",
       preferred_mode: Math.random() > 0.3 ? "rail" : "road",
       distance_km: Math.round(800 + Math.random() * 1200),
