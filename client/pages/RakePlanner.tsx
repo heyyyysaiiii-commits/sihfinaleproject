@@ -70,10 +70,10 @@ export default function RakePlanner() {
   };
 
   const getRailModeIcon = (rail_percent?: number) => {
-    if (!rail_percent) return "🚆";
-    if (rail_percent === 100) return "🚆";
-    if (rail_percent > 0) return "🚚";
-    return "🚚";
+    if (!rail_percent) return "Rail";
+    if (rail_percent === 100) return "Rail";
+    if (rail_percent > 0) return "Rail + Road";
+    return "Road";
   };
 
   const getUtilizationColor = (utilization: number) => {
