@@ -184,7 +184,6 @@ export default function RakePlanner() {
                       {/* Left Section - Rake Info */}
                       <div className="flex-1 space-y-3">
                         <div className="flex items-start gap-2">
-                          <span className="text-2xl">🚆</span>
                           <div>
                             <h3 className="font-bold text-lg">
                               Rake #{rake.rake_id.split("_")[1]} · {rake.rake_id}
