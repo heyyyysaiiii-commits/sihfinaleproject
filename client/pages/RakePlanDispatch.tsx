@@ -471,6 +471,14 @@ export default function RakePlanDispatch() {
                 <Button className="btn-gradient h-12 px-8 text-base font-semibold">
                   Approve All & Dispatch
                 </Button>
+                <Button
+                  onClick={handleAddToDatabase}
+                  variant="outline"
+                  className="h-12 px-8 border-primary/30 gap-2 hover:bg-primary/10"
+                >
+                  <Database className="w-4 h-4" />
+                  Add Plan to Database
+                </Button>
                 <Button variant="outline" className="h-12 px-8 border-primary/30">
                   Back to Optimization
                 </Button>
