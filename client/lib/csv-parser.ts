@@ -87,6 +87,8 @@ function parseCSVLine(line: string): string[] {
 export interface ValidationResult {
   isValid: boolean;
   missingColumns: string[];
+  validRows: number;
+  invalidRows: number;
   errorRows: Array<{ rowIndex: number; errors: string[] }>;
   summary: string;
 }
@@ -100,11 +102,12 @@ export function validateCSVData(
   );
 
   const errorRows: Array<{ rowIndex: number; errors: string[] }> = [];
+  let validRowCount = 0;
 
   // Check each row for required columns
   parsedData.rows.forEach((row, index) => {
     const rowErrors: string[] = [];
-    
+
     requiredColumns.forEach(col => {
       const value = row[col];
       if (value === null || value === undefined || value === '') {
@@ -114,6 +117,8 @@ export function validateCSVData(
 
     if (rowErrors.length > 0) {
       errorRows.push({ rowIndex: index + 2, errors: rowErrors }); // +2 because row 1 is header, and 0-indexed
+    } else {
+      validRowCount++;
     }
   });
 
@@ -136,6 +141,8 @@ export function validateCSVData(
   return {
     isValid,
     missingColumns,
+    validRows: validRowCount,
+    invalidRows: errorRows.length,
     errorRows,
     summary,
   };
