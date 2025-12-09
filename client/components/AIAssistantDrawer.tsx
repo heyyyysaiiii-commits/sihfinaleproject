@@ -27,23 +27,83 @@ const SAMPLE_QUESTIONS = [
 const generateAssistantResponse = (question: string, planData?: any): string => {
   const lowerQ = question.toLowerCase();
 
-  if (lowerQ.includes("how many rakes")) {
-    return "Based on the optimization, 3 rakes have been formed to consolidate all 19 orders efficiently. Each rake is assigned to handle specific destinations and maintain optimal utilization rates.";
+  // Extract data from planData if available
+  let rakeCount = 0;
+  let totalOrders = 0;
+  let totalQuantity = 0;
+  let totalCost = 0;
+  let railOrders = 0;
+  let roadOrders = 0;
+  let costSavings = 0;
+  let costSavingsPercent = "0";
+  let avgUtilization = 0;
+
+  if (planData && Array.isArray(planData)) {
+    totalOrders = planData.length;
+    const uniqueRakes = new Set(planData.map((item: any) => item.rake_id));
+    rakeCount = uniqueRakes.size;
+    totalQuantity = Math.round(planData.reduce((sum: number, item: any) => sum + item.quantity_tonnes, 0));
+    totalCost = Math.round(planData.reduce((sum: number, item: any) => sum + item.estimated_cost, 0));
+    railOrders = planData.filter((item: any) => item.transport_mode === "rail").length;
+    roadOrders = planData.filter((item: any) => item.transport_mode === "road").length;
+    avgUtilization = Math.round(planData.reduce((sum: number, item: any) => sum + item.utilization_percent, 0) / planData.length);
+    const baselineCost = totalQuantity * 765;
+    costSavings = Math.round(baselineCost - totalCost);
+    costSavingsPercent = ((costSavings / baselineCost) * 100).toFixed(1);
   }
-  if (lowerQ.includes("cost saving")) {
-    return "The optimization is projected to achieve 63% cost savings compared to the baseline all-road transport scenario. The mixed rail-road approach leverages bulk discounts while maintaining SLA compliance.";
+
+  // Answer specific questions about the plan
+  if (lowerQ.includes("order") && lowerQ.includes("why")) {
+    const orderMatch = question.match(/ORD-\d+|order\s+(\w+)/i);
+    if (orderMatch && planData && Array.isArray(planData)) {
+      const orderId = orderMatch[0];
+      const orderItem = planData.find((item: any) => item.order_id === orderId);
+      if (orderItem) {
+        return `${orderItem.explanation} ${orderItem.reason}`;
+      }
+    }
+    return "Orders are assigned to rakes based on destination consolidation, wagon capacity constraints, SLA deadlines, and transport mode optimization. Each allocation maximizes utilization while respecting safety and scheduling constraints.";
   }
-  if (lowerQ.includes("high priority")) {
-    return "Orders ORD-001 through ORD-005 are marked as priority 1 and receive preferential allocation to earlier loading slots. These are critical orders that require faster processing.";
+
+  if (lowerQ.includes("how many rakes") || lowerQ.includes("rakes formed")) {
+    return `${rakeCount} rakes have been formed to consolidate all ${totalOrders} orders efficiently. Each rake is assigned to handle specific destinations and maintain optimal utilization rates averaging ${avgUtilization}%.`;
   }
-  if (lowerQ.includes("rail vs road")) {
-    return "Approximately 85% of the total quantity (1,245 MT) is allocated to rail transport for cost efficiency, while 15% (225 MT) uses road for urgent or final-mile deliveries. This split achieves optimal balance between cost and service level.";
+
+  if (lowerQ.includes("cost saving") || lowerQ.includes("savings")) {
+    return `The optimization is projected to achieve ${costSavingsPercent}% cost savings (₹${(costSavings / 1000).toFixed(1)}k saved) compared to the baseline all-road transport scenario. The mixed rail-road approach leverages bulk discounts while maintaining SLA compliance.`;
   }
+
+  if (lowerQ.includes("total cost")) {
+    return `The estimated total cost for this plan is ₹${(totalCost / 1000).toFixed(1)}k for ${totalQuantity} MT across ${rakeCount} rakes. This achieves ${costSavingsPercent}% savings versus baseline all-road transport at ₹${(totalQuantity * 765 / 1000).toFixed(1)}k.`;
+  }
+
+  if (lowerQ.includes("utilization")) {
+    return `Average wagon utilization across all rakes is ${avgUtilization}%. This indicates efficient packing of orders while respecting crane and platform capacity constraints (30 MT per crane, 45 wagons per rake max).`;
+  }
+
+  if (lowerQ.includes("rail vs road") || lowerQ.includes("transport mode")) {
+    const railQuantity = totalQuantity * (railOrders / totalOrders);
+    const roadQuantity = totalQuantity - railQuantity;
+    return `${railOrders} orders (${Math.round(railQuantity)} MT) allocated to rail for cost efficiency, while ${roadOrders} orders (${Math.round(roadQuantity)} MT) use road for urgent or final-mile deliveries. This split achieves optimal balance between cost and service level.`;
+  }
+
+  if (lowerQ.includes("sla") || lowerQ.includes("compliance")) {
+    return "All orders are scheduled within their SLA deadlines. The system respects due dates and priority levels to minimize demurrage penalties and ensure on-time delivery. High-priority orders receive preferential loading slots.";
+  }
+
   if (lowerQ.includes("override")) {
     return "To override an allocation, click the 'Override' button next to any order in the Rake Plan table. This marks the order for manual review and allows you to apply custom logic. You can also use the 'Approve' button to lock in an allocation.";
   }
 
-  return "The OptiRake DSS uses advanced algorithms to consolidate orders into optimal rakes based on destination, quantity, and delivery deadlines. All allocations include detailed natural language explanations so you understand the reasoning. Feel free to ask me anything about the plan!";
+  if (lowerQ.includes("best fit") || lowerQ.includes("allocation")) {
+    return "The 'Find Best Fit' algorithm works by: (1) Grouping orders by destination for consolidation, (2) Checking wagon and crane capacity constraints, (3) Optimizing transport mode selection (rail vs road), (4) Prioritizing based on SLA deadlines. Each order gets a detailed explanation of why it was assigned to its specific rake and wagon.";
+  }
+
+  if (lowerQ.includes("explain") && lowerQ.includes("decision")) {
+    return `I can explain any allocation decision. The system uses intelligent consolidation logic to maximize utilization while respecting all constraints. For each order, you'll find: (1) Why it was assigned to that specific rake, (2) How it supports the overall optimization, (3) Cost impact analysis, (4) SLA compliance verification. Ask about a specific order to learn more.`;
+  }
+
+  return `The OptiRake DSS optimized your ${totalOrders} orders into ${rakeCount} rakes with ${costSavingsPercent}% cost savings and ${avgUtilization}% average utilization. I can answer questions about specific orders, rake formations, costs, SLA compliance, or transport mode selection. What would you like to know?`;
 };
 
 export function AIAssistantDrawer({ isOpen, onClose, planData }: AIAssistantDrawerProps) {
