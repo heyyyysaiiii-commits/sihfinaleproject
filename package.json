@@ -11,7 +11,7 @@
     ]
   },
   "scripts": {
-    "build:client": "vite build ./", 
+    "build:client": "vite build", 
     "build:server": "vite build --config client/vite.config.server.ts"
   },
   "dependencies": {
